@@ -25,7 +25,7 @@ namespace NinjaUtils
 
         private bool open = true;
 
-        private Rect winRect = new Rect(20, 20, 275, 769);
+        private Rect winRect = new Rect(20, 20, 275, 870);
 
         void OnGUI()
         {
@@ -125,24 +125,32 @@ namespace NinjaUtils
             ninjaCalls.savedVel.z = float.Parse(ninjaCalls.saveVelZ);
 
             linePos = linePos + (elementSizeH + lineSpacing);
-            DrawText(sidePadding, linePos, winRect.width - (sidePadding * 2), elementSizeH, "Saved Storage", colorWhite, colorBlack);
 
-            linePos = linePos + (elementSizeH);
-
-            ninjaCalls.savedStorageS = GUI.TextArea(new Rect((winRect.width / 2) - (((winRect.width / 3) - (sidePadding * buttonSpacing)) / 2), linePos, (winRect.width / 3) - (sidePadding * buttonSpacing), elementSizeH), ninjaCalls.savedStorageS);
-
-            if (!float.TryParse(ninjaCalls.savedStorageS, out _)) { ninjaCalls.savedStorageS = ninjaCalls.savedStorage.ToString(); }
-
-            ninjaCalls.savedStorage = float.Parse(ninjaCalls.savedStorageS);
+            DrawText(sidePadding, linePos, (winRect.width/2) - (sidePadding * 2), elementSizeH, "Saved Storage", colorWhite, colorBlack);
+            DrawText(sidePadding, linePos, (winRect.width * 1.5f) - (sidePadding * 2), elementSizeH, "Saved Boost", colorWhite, colorBlack);
 
             linePos = linePos + (elementSizeH + lineSpacing);
-            if (GUI.Button(new Rect(sidePadding, linePos, winRect.width - (sidePadding * 2), elementSizeH), "Set Storage Speed (O)") && (ninjaCalls.isMenuing || ninjaCalls.isPaused))
+            ninjaCalls.savedStorageS = GUI.TextArea(new Rect(sidePadding, linePos, winRect.width - (sidePadding / buttonSpacing) - (winRect.width / 2), elementSizeH), ninjaCalls.savedStorageS);
+            if (!float.TryParse(ninjaCalls.savedStorageS, out _)) { ninjaCalls.savedStorageS = ninjaCalls.savedStorage.ToString(); }
+            ninjaCalls.savedStorage = float.Parse(ninjaCalls.savedStorageS);
+
+            ninjaCalls.savedBoostS = GUI.TextArea(new Rect((winRect.width / 2) + (sidePadding / buttonSpacing), linePos, winRect.width - (sidePadding * buttonSpacing) - (winRect.width / 2), elementSizeH), ninjaCalls.savedBoostS);
+            if (!float.TryParse(ninjaCalls.savedBoostS, out _)) { ninjaCalls.savedBoostS = ninjaCalls.savedBoost.ToString(); }
+            ninjaCalls.savedBoost = float.Parse(ninjaCalls.savedBoostS);
+
+            linePos = linePos + (elementSizeH + lineSpacing);
+            if (GUI.Button(new Rect(sidePadding, linePos, winRect.width - (sidePadding / buttonSpacing) - (winRect.width / 2), elementSizeH), "Set Storage (O)") && (ninjaCalls.isMenuing || ninjaCalls.isPaused))
             {
                 ninjaFunction.SetStorage(ninjaCalls.GetPlayer(), ninjaCalls.savedStorage);
             }
 
+            if (GUI.Button(new Rect((winRect.width / 2) + (sidePadding / buttonSpacing), linePos, winRect.width - (sidePadding * buttonSpacing) - (winRect.width / 2), elementSizeH), "Set Boost (B)") && (ninjaCalls.isMenuing || ninjaCalls.isPaused))
+            {
+                ninjaFunction.SetBoost(ninjaCalls.GetPlayer(), ninjaCalls.savedBoost);
+            }
+
             linePos = linePos + (elementSizeH + lineSpacing);
-            if (GUI.Button(new Rect(sidePadding, linePos, winRect.width - (sidePadding * 2), elementSizeH), $"Toggle Saving Velocity ({(ninjaCalls.shouldSaveVel ? "<color=green>On</color>" : "<color=red>Off</color>")})") && (ninjaCalls.isMenuing || ninjaCalls.isPaused))
+            if (GUI.Button(new Rect(sidePadding, linePos, winRect.width - (sidePadding * 2), elementSizeH), $"Toggle Saving Velocity + Boost ({(ninjaCalls.shouldSaveVel ? "<color=green>On</color>" : "<color=red>Off</color>")})") && (ninjaCalls.isMenuing || ninjaCalls.isPaused))
             {
                 ninjaCalls.shouldSaveVel = !ninjaCalls.shouldSaveVel;
             }
@@ -284,6 +292,20 @@ namespace NinjaUtils
             {
                 triggerTools.DisplayTriggerZones = !triggerTools.DisplayTriggerZones;
             }
+
+            linePos = linePos + (elementSizeH * 2 + lineSpacing);
+            if (GUI.Button(new Rect(sidePadding, linePos, winRect.width - (sidePadding * 2), elementSizeH), $"Reset Area Graffiti/REP (Z)") && (ninjaCalls.isMenuing || ninjaCalls.isPaused))
+            {
+                ninjaFunction.ResetGraffiti(ninjaCalls.player);
+            }
+
+            linePos = linePos + (elementSizeH * 2 + lineSpacing);
+            if (GUI.Button(new Rect(sidePadding, linePos, winRect.width - (sidePadding * 2), elementSizeH), $"Freeze All Cars (C)") && (ninjaCalls.isMenuing || ninjaCalls.isPaused))
+            {
+                ninjaFunction.Bytez();
+            }
+
+
         }
 
         void DrawText(float x, float y, float w, float h, string text, GUIStyle textColor, GUIStyle shadowColor = null)
@@ -319,10 +341,13 @@ namespace NinjaUtils
             if (UnityEngine.Input.GetKeyDown(KeyCode.L)) { ninjaFunction.LimitFPS(); }
             if (UnityEngine.Input.GetKeyDown(KeyCode.K)) { ninjaFunction.EndWanted(); }
             if (UnityEngine.Input.GetKeyDown(KeyCode.O)) { ninjaFunction.SetStorage(ninjaCalls.GetPlayer(), ninjaCalls.savedStorage); }
+            if (UnityEngine.Input.GetKeyDown(KeyCode.B)) { ninjaFunction.SetBoost(ninjaCalls.GetPlayer(), ninjaCalls.savedBoost); }
             if (UnityEngine.Input.GetKeyDown(KeyCode.T)) { ninjaCalls.timescaleEnabled = !ninjaCalls.timescaleEnabled; }
             if (UnityEngine.Input.GetKeyDown(KeyCode.Quote)) { open = !open; }
             if (UnityEngine.Input.GetKeyDown(KeyCode.X)) { triggerTools.DisplayTriggerZones = !triggerTools.DisplayTriggerZones; }
 
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Z)) { ninjaFunction.ResetGraffiti(ninjaCalls.GetPlayer()); }
+            if (UnityEngine.Input.GetKeyDown(KeyCode.C)) { ninjaFunction.Bytez(); }
             //if (UnityEngine.Input.GetKeyDown(KeyCode.V)) { ninjaFunction.VisualizeZip(); }
             //if (UnityEngine.Input.GetKeyDown(KeyCode.B)) { ninjaFunction.HighlightWalls(); }
         }

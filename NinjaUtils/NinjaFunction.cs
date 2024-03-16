@@ -81,6 +81,7 @@ namespace NinjaUtils
 
         public void SaveLoad(Player player, bool save)
         {
+            
             if (player != null)
             {
                 if (save)
@@ -101,7 +102,13 @@ namespace NinjaUtils
                         ninjaCalls.saveVelX = ninjaCalls.savedVel.x.ToString();
                         ninjaCalls.saveVelY = ninjaCalls.savedVel.y.ToString();
                         ninjaCalls.saveVelZ = ninjaCalls.savedVel.z.ToString();
+
+                        ninjaCalls.savedBoost = player.boostCharge;
+                        ninjaCalls.savedBoostS = ninjaCalls.savedBoost.ToString();
                     }
+
+
+
                 }
                 else
                 {
@@ -115,6 +122,7 @@ namespace NinjaUtils
                     }
                     SetStorage(player, ninjaCalls.savedStorage);
                     player.SetVelocity(ninjaCalls.savedVel);
+                    player.boostCharge = ninjaCalls.savedBoost;
                 }
             }
         }
@@ -261,6 +269,47 @@ namespace NinjaUtils
                 lastSpeed.SetValue(ninjaCalls.wallrunLineAbility, storage);
             }
         }
+
+        public void SetBoost(Player player, float boost)
+        {
+            if (player != null)
+            {
+                player.boostCharge = boost;
+            }
+        }
+
+        public void ResetGraffiti(Player player)
+        {
+            
+            GraffitiSpot[] grafs = FindObjectsOfType<GraffitiSpot>();
+            foreach (GraffitiSpot graf in grafs)
+            {
+                graf.ResetFirstTime();
+                graf.Invoke("ClearPaint", 0);
+            }
+            FieldInfo rep = typeof(Player).GetField("rep", BindingFlags.Instance | BindingFlags.NonPublic);
+            rep.SetValue(ninjaCalls.player, 0);
+
+            FieldInfo progress = typeof(StageManager).GetField("currentStageProgress", BindingFlags.Instance | BindingFlags.NonPublic);
+            
+            StageProgress stageProgress = (StageProgress)progress.GetValue(ninjaCalls.loadedBaseModule.StageManager);
+            stageProgress.reputation = 0;
+
+            FieldInfo grafsDone = typeof(Player).GetField("graffitiTitlesDone", BindingFlags.Instance | BindingFlags.NonPublic);
+            List<string> grafsList = (List<string>)grafsDone.GetValue(player);
+            grafsList.Clear();
+            
+        }
+
+        public void Bytez()
+        {
+                FieldInfo carHandler = typeof(Car).GetField("handler", BindingFlags.Instance | BindingFlags.NonPublic);
+                foreach (CarsMoveHandler carsMoveHandler in FindObjectsOfType<CarsMoveHandler>())
+                {
+                    Destroy(carsMoveHandler);
+                }
+        }
+
 
         public void VisualizeZip() 
         {

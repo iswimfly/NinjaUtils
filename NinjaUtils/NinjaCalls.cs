@@ -19,6 +19,7 @@ namespace NinjaUtils
         public Vector3 savedPos = Vector3.zero;
         public Quaternion savedAng = new Quaternion(0.00000f, 0.70926f, 0.00000f, -0.70495f);
         public Vector3 savedVel = Vector3.zero;
+        public float savedBoost = 0;
 
         public bool shouldSaveVel = true;
 
@@ -106,6 +107,7 @@ namespace NinjaUtils
         public String saveVelZ = "";
 
         public String savedStorageS = "";
+        public String savedBoostS = "";
 
         public String noclipSpeedS = "";
         public String flySpeedS = "";
