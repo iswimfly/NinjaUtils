@@ -3,7 +3,7 @@
 A heavily inspired take on [SpeedUtils](https://github.com/realJomoko/SpeedUtils/), and NinjaCookie's [NinjaUtils](https://github.com/Ninja-Cookie/NinjaUtils/tree/master/NinjaUtils) with all the same features + extra, done from scratch in my own way with mild reference to it.
 TriggerTools.cs is taken directly from [SpeedUtils](https://github.com/realJomoko/SpeedUtils/) (Not including some edits), all credit goes to that and its creator(s).
 
-![image](https://github.com/Ninja-Cookie/NinjaUtils/assets/62808028/6de919cf-e9e5-4209-a220-d105a8f02031)
+![image](https://github.com/iswimfly/NinjaUtils/assets/48336237/82dbe0e0-381b-4dea-a96c-fa1eac16c41e)
 
 New things include:
 - Ability to save velocity, current move style when saving position.
