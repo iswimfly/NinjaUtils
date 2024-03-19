@@ -10,6 +10,8 @@ New things include:
 - Ability to save / set storage speed from billboards.
 - Ability to save / set the amount of boost the player has.
 - Being able to set specific position values for your saved location.
+- Resetting the graffiti for an entire area.
+- Freezing all cars in place. REQUIRES AREA RELOAD TO UNDO!
 
 
 # Installation
