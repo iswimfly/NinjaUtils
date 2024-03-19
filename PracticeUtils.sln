@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinjaUtils", "NinjaUtils\NinjaUtils.csproj", "{F384AF68-3E58-4FA3-898E-E31950BB0653}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeUtils", "NinjaUtils\PracticeUtils.csproj", "{F384AF68-3E58-4FA3-898E-E31950BB0653}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

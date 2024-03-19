@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace NinjaUtils
+namespace PracticeUtils
 {
-    internal class NinjaCalls : MonoBehaviour
+    internal class PracticeCalls : MonoBehaviour
     {
-        public static NinjaCalls Instance;
+        public static PracticeCalls Instance;
 
-        public NinjaCalls()
+        public PracticeCalls()
         {
             Instance = this;
         }
@@ -20,7 +20,7 @@ namespace NinjaUtils
         public Quaternion savedAng = new Quaternion(0.00000f, 0.70926f, 0.00000f, -0.70495f);
         public Vector3 savedVel = Vector3.zero;
         public float savedBoost = 0;
-
+        public MoveStyle savedStyle = 0;
         public bool shouldSaveVel = true;
 
         // STAGE SELECT

@@ -8,13 +8,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-namespace NinjaUtils
+namespace PracticeUtils
 {
     public class TriggerTools : MonoBehaviour
     {
         public static TriggerTools Instance;
 
-        private NinjaCalls ninjaCalls;
+        private PracticeCalls ninjaCalls;
 
         private Core core;
         private WorldHandler world;
@@ -45,7 +45,7 @@ namespace NinjaUtils
         public TriggerTools()
         {
             Instance = this;
-            ninjaCalls = NinjaCalls.Instance;
+            ninjaCalls = PracticeCalls.Instance;
         }
 
         private bool triggersInitd = false;
