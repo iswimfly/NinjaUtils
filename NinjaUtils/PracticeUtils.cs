@@ -8,7 +8,7 @@ namespace PracticeUtils
     {
         public const string pluginGuid = "speedrunning.brc.practiceutils";
         public const string pluginName = "PracticeUtils";
-        public const string pluginVersion = "0.0.3";
+        public const string pluginVersion = "0.0.4";
 
         private GameObject _mod;
         private PracticeGUI _practiceGUI;
