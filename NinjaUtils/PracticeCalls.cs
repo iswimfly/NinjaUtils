@@ -116,6 +116,10 @@ namespace PracticeUtils
 
         public String timescaleS = "";
 
+        // INSTA FINISH GRAFS
+
+        public bool autoFinishGrafs = false;
+
         // SAVES
         
 

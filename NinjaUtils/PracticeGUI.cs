@@ -25,7 +25,7 @@ namespace PracticeUtils
 
         private bool open = true;
 
-        private Rect winRect = new Rect(20, 20, 275, 870);
+        private Rect winRect = new Rect(20, 20, 275, 920);
 
         void OnGUI()
         {
@@ -305,7 +305,11 @@ namespace PracticeUtils
                 practiceFunction.Bytez();
             }
 
-
+            linePos = linePos + (elementSizeH * 2 + lineSpacing);
+            if (GUI.Button(new Rect(sidePadding, linePos, winRect.width - (sidePadding * 2), elementSizeH), $"Toggle Auto Graf ({(practiceCalls.autoFinishGrafs ? "<color=green>On</color>" : "<color=red>Off</color>")}) (G)") && (practiceCalls.isMenuing || practiceCalls.isPaused))
+            {
+                practiceFunction.AutoFinishGrafs();
+            }
         }
 
         void DrawText(float x, float y, float w, float h, string text, GUIStyle textColor, GUIStyle shadowColor = null)
@@ -345,9 +349,9 @@ namespace PracticeUtils
             if (UnityEngine.Input.GetKeyDown(KeyCode.T)) { practiceCalls.timescaleEnabled = !practiceCalls.timescaleEnabled; }
             if (UnityEngine.Input.GetKeyDown(KeyCode.Quote)) { open = !open; }
             if (UnityEngine.Input.GetKeyDown(KeyCode.X)) { triggerTools.DisplayTriggerZones = !triggerTools.DisplayTriggerZones; }
-
             if (UnityEngine.Input.GetKeyDown(KeyCode.Z)) { practiceFunction.ResetGraffiti(practiceCalls.GetPlayer()); }
             if (UnityEngine.Input.GetKeyDown(KeyCode.C)) { practiceFunction.Bytez(); }
+            if (UnityEngine.Input.GetKeyDown(KeyCode.G)) { practiceFunction.AutoFinishGrafs(); }
             //if (UnityEngine.Input.GetKeyDown(KeyCode.V)) { ninjaFunction.VisualizeZip(); }
             //if (UnityEngine.Input.GetKeyDown(KeyCode.B)) { ninjaFunction.HighlightWalls(); }
         }

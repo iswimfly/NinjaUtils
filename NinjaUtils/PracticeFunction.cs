@@ -394,8 +394,9 @@ namespace PracticeUtils
             }
         }
 
-        public void HighlightWalls() 
+        public void AutoFinishGrafs()
         {
+            practiceCalls.autoFinishGrafs = !practiceCalls.autoFinishGrafs;
         }
     }
 }

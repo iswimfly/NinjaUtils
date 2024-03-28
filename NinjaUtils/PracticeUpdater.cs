@@ -2,6 +2,7 @@
 using Rewired;
 using System.Reflection;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace PracticeUtils
 {
@@ -13,6 +14,9 @@ namespace PracticeUtils
         private PracticeCalls practiceCalls;
         private PracticeGUI practiceGUI;
 
+        private int mGrafs = 0;
+        private int lGrafs = 0;
+        private int xlGrafs = 0;
         public PracticeUpdater()
         {
             Instance = this;
@@ -286,6 +290,115 @@ namespace PracticeUtils
                     practiceCalls.player.GetComponent<Collider>().enabled = true;
 
                     practiceCalls.flyOff = true;
+                }
+            }
+
+            if (practiceCalls.autoFinishGrafs)
+            {
+                if (GameObject.Find("GraffitiGame(Clone)") != null)
+                {
+                    GraffitiGame grafGame = GameObject.Find("GraffitiGame(Clone)").GetComponent<GraffitiGame>();
+                    FieldInfo gSpot = typeof(GraffitiGame).GetField("gSpot", BindingFlags.Instance | BindingFlags.NonPublic);
+                    FieldInfo state = typeof(GraffitiGame).GetField("state", BindingFlags.Instance | BindingFlags.NonPublic);
+                    FieldInfo targetsHit = typeof(GraffitiGame).GetField("targetsHitSequence", BindingFlags.Instance | BindingFlags.NonPublic);
+                    
+                    GraffitiSpot graffitiSpot = (GraffitiSpot)gSpot.GetValue(grafGame);
+                    if ((GraffitiGame.GraffitiGameState)state.GetValue(grafGame) == GraffitiGame.GraffitiGameState.MAIN_STATE)
+                    {
+                        List<int> targetsHitSequence = new List<int>();
+                        var setState = grafGame.GetType().GetMethod("SetState", BindingFlags.NonPublic | BindingFlags.Instance);
+                        object[] parameters = new object[] { GraffitiGame.GraffitiGameState.COMPLETE_TARGETS };
+                        switch (graffitiSpot.size)
+                        {
+                            case GraffitiSize.S:
+
+                                break;
+
+                            case GraffitiSize.M:
+                                switch (mGrafs)
+                                {
+                                    case 0:
+                                        targetsHitSequence.Add(1);
+                                        targetsHitSequence.Add(4);
+                                        targetsHitSequence.Add(2);
+                                        targetsHitSequence.Add(3);
+                                        targetsHitSequence.Add(0);
+                                        mGrafs = 1;
+                                        break;
+                                    case 1:
+                                        targetsHitSequence.Add(4);
+                                        targetsHitSequence.Add(2);
+                                        targetsHitSequence.Add(3);
+                                        targetsHitSequence.Add(1);
+                                        targetsHitSequence.Add(0);
+                                        mGrafs = 0;
+                                        break;
+                                }
+                                
+                                targetsHit.SetValue(grafGame, targetsHitSequence);
+                                setState.Invoke(grafGame, parameters);
+                                break;
+
+                            case GraffitiSize.L:
+                                switch (lGrafs)
+                                {
+                                    case 0:
+                                        targetsHitSequence.Add(2);
+                                        targetsHitSequence.Add(4);
+                                        targetsHitSequence.Add(5);
+                                        targetsHitSequence.Add(3);
+                                        targetsHitSequence.Add(1);
+                                        targetsHitSequence.Add(0);
+                                        lGrafs = 1;
+                                        break;
+                                    case 1:
+                                        targetsHitSequence.Add(5);
+                                        targetsHitSequence.Add(3);
+                                        targetsHitSequence.Add(4);
+                                        targetsHitSequence.Add(1);
+                                        targetsHitSequence.Add(2);
+                                        targetsHitSequence.Add(0);
+                                        lGrafs = 0;
+                                        break;
+                                }
+                                
+                                targetsHit.SetValue(grafGame, targetsHitSequence);
+                                setState.Invoke(grafGame, parameters);
+                                break;
+
+                            case GraffitiSize.XL:
+                                switch (xlGrafs)
+                                {
+                                    case 0:
+                                        targetsHitSequence.Add(6);
+                                        targetsHitSequence.Add(3);
+                                        targetsHitSequence.Add(5);
+                                        targetsHitSequence.Add(4);
+                                        targetsHitSequence.Add(2);
+                                        targetsHitSequence.Add(1);
+                                        targetsHitSequence.Add(0);
+                                        xlGrafs = 1;
+                                        break;
+                                    case 1:
+                                        targetsHitSequence.Add(2);
+                                        targetsHitSequence.Add(3);
+                                        targetsHitSequence.Add(5);
+                                        targetsHitSequence.Add(1);
+                                        targetsHitSequence.Add(4);
+                                        targetsHitSequence.Add(6);
+                                        targetsHitSequence.Add(0);
+                                        xlGrafs = 0;
+                                        break;
+                                }
+                                
+                                targetsHit.SetValue(grafGame, targetsHitSequence);
+                                setState.Invoke(grafGame, parameters);
+                                break;
+
+
+                        }
+                    }
+                    
                 }
             }
         }
