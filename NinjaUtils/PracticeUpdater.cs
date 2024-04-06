@@ -13,6 +13,7 @@ namespace PracticeUtils
         private PracticeFunction practiceFunction;
         private PracticeCalls practiceCalls;
         private PracticeGUI practiceGUI;
+        private GameInput gameInput;
 
         private int mGrafs = 0;
         private int lGrafs = 0;
@@ -169,6 +170,7 @@ namespace PracticeUtils
         {
             if (practiceCalls.fly || practiceCalls.noclip)
             {
+                if (gameInput == null) { gameInput = practiceCalls.GetGameInput(); }
                 if (practiceCalls.player != null)
                 {
                     practiceCalls.flyOff = false;
@@ -178,7 +180,7 @@ namespace PracticeUtils
                         practiceCalls.player.GetComponent<Collider>().enabled = false;
                         practiceCalls.player.interactionCollider.enabled = false;
                     }
-                    else 
+                    else
                     {
                         practiceCalls.player.GetComponent<Collider>().enabled = true;
                         practiceCalls.player.interactionCollider.enabled = true;
@@ -193,66 +195,28 @@ namespace PracticeUtils
 
                     Vector3 velocity = Vector3.zero;
 
-                    float deadzone = 0.01f;
-
-                    float finalFlySpeedForward = 1f;
-                    float finalFlySpeedRight = 1f;
-
-                    if (practiceCalls.fly)
-                    {
-                        finalFlySpeedForward = practiceCalls.flySpeed;
-                        finalFlySpeedRight = practiceCalls.flySpeed;
-                    } 
-                    else
-                    {
-                        finalFlySpeedForward = practiceCalls.noclipSpeed;
-                        finalFlySpeedRight = practiceCalls.noclipSpeed;
-                    }
-
-                    if (UnityEngine.Input.GetAxis("Vertical") > deadzone) { finalFlySpeedForward = finalFlySpeedForward * UnityEngine.Input.GetAxis("Vertical"); }
-                    else if (UnityEngine.Input.GetAxis("Vertical") < -deadzone) { finalFlySpeedForward = finalFlySpeedForward * (UnityEngine.Input.GetAxis("Vertical") * -1); }
-
-                    if (UnityEngine.Input.GetAxis("Horizontal") > deadzone) { finalFlySpeedRight = finalFlySpeedRight * UnityEngine.Input.GetAxis("Horizontal"); }
-                    else if (UnityEngine.Input.GetAxis("Horizontal") < -deadzone) { finalFlySpeedRight = finalFlySpeedRight * (UnityEngine.Input.GetAxis("Horizontal") * -1); }
-
-                    Vector3 forward = finalFlySpeedForward * cameraMode.forward;
-                    Vector3 right = finalFlySpeedRight * cameraMode.right;
-                    forward.y = 0f;
-                    right.y = 0f;
+                    float targetSpeed = practiceCalls.fly ? practiceCalls.flySpeed : practiceCalls.noclipSpeed;
+                    float finalFlySpeedForward = targetSpeed;
+                    float finalFlySpeedRight = targetSpeed;
 
                     practiceCalls.player.CompletelyStop();
-                    if (UnityEngine.Input.GetKey(KeyCode.W) || UnityEngine.Input.GetAxis("Vertical") > deadzone)
+                    if (gameInput != null)
                     {
-                        practiceCalls.player.motor.rotation = cameraMode.rotation;
-                        velocity += forward;
-                    }
-                    else if (UnityEngine.Input.GetKey(KeyCode.S) || UnityEngine.Input.GetAxis("Vertical") < -deadzone)
-                    {
-                        practiceCalls.player.motor.rotation = cameraMode.rotation;
-                        velocity += forward * -1;
+
+                        Vector3 hAxis = gameInput.GetAxis(5, 0) * cameraMode.right * targetSpeed;
+                        Vector3 vAxis = gameInput.GetAxis(6, 0) * Vector3.Normalize(new Vector3(cameraMode.forward.x, 0f, cameraMode.forward.z)) * targetSpeed;
+                        Vector3 axis = hAxis + vAxis;
+                        axis.y = 0f;
+
+                        if (axis.magnitude > targetSpeed)
+                            axis = axis.normalized * targetSpeed;
+
+                        velocity = axis;
+
+                        if (velocity != Vector3.zero) { practiceCalls.player.motor.rotation = Quaternion.Euler(new Vector3(0f, cameraMode.eulerAngles.y, cameraMode.eulerAngles.z));; }
                     }
 
-                    if (UnityEngine.Input.GetKey(KeyCode.A) || UnityEngine.Input.GetAxis("Horizontal") < -deadzone)
-                    {
-                        practiceCalls.player.motor.rotation = cameraMode.rotation;
-                        velocity += right * -1;
-                    }
-                    else if (UnityEngine.Input.GetKey(KeyCode.D) || UnityEngine.Input.GetAxis("Horizontal") > deadzone)
-                    {
-                        practiceCalls.player.motor.rotation = cameraMode.rotation;
-                        velocity += right;
-                    }
-
-                    if (practiceCalls.fly)
-                    {
-                        velocity = velocity.normalized * practiceCalls.flySpeed;
-                    } 
-                    else
-                    {
-                        velocity = velocity.normalized * practiceCalls.noclipSpeed;
-                    }
-
-                    if (UnityEngine.Input.GetKey(KeyCode.Space) || UnityEngine.Input.GetKey(KeyCode.JoystickButton0))
+                    if (UnityEngine.Input.GetKey(KeyCode.Space) || (gameInput != null && gameInput.GetButtonHeld(7, 0)))
                     {
                         if (practiceCalls.player.IsGrounded())
                         {
@@ -261,7 +225,7 @@ namespace PracticeUtils
                         }
                         velocity.y = 20;
                     }
-                    else if (UnityEngine.Input.GetKey(KeyCode.LeftControl) || UnityEngine.Input.GetKey(KeyCode.JoystickButton1))
+                    else if (UnityEngine.Input.GetKey(KeyCode.LeftControl) || (gameInput != null && gameInput.GetButtonHeld(65, 0)))
                     {
                         velocity.y = -20;
                     }

@@ -351,7 +351,7 @@ namespace PracticeUtils
             if (UnityEngine.Input.GetKeyDown(KeyCode.X)) { triggerTools.DisplayTriggerZones = !triggerTools.DisplayTriggerZones; }
             if (UnityEngine.Input.GetKeyDown(KeyCode.Z)) { practiceFunction.ResetGraffiti(practiceCalls.GetPlayer()); }
             if (UnityEngine.Input.GetKeyDown(KeyCode.C)) { practiceFunction.Bytez(); }
-            if (UnityEngine.Input.GetKeyDown(KeyCode.G)) { practiceFunction.AutoFinishGrafs(); }
+            if (UnityEngine.Input.GetKeyDown(KeyCode.G)) { practiceCalls.autoFinishGrafs = !practiceCalls.autoFinishGrafs; ; }
             //if (UnityEngine.Input.GetKeyDown(KeyCode.V)) { ninjaFunction.VisualizeZip(); }
             //if (UnityEngine.Input.GetKeyDown(KeyCode.B)) { ninjaFunction.HighlightWalls(); }
         }

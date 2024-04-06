@@ -123,16 +123,15 @@ namespace PracticeUtils
                     SetStorage(player, practiceCalls.savedStorage);
                     player.SetVelocity(practiceCalls.savedVel);
                     player.boostCharge = practiceCalls.savedBoost;
-                    player.SetCurrentMoveStyleEquipped(practiceCalls.savedStyle, true, true);
                     if (practiceCalls.savedStyle == MoveStyle.ON_FOOT)
                     {
                         player.SwitchToEquippedMovestyle(false);
                     }
                     else
                     {
-                        player.SwitchToEquippedMovestyle(true);
+                        player.SetCurrentMoveStyleEquipped(practiceCalls.savedStyle, false, false);
+                        player.SwitchToEquippedMovestyle(true, false, showEffect: false);
                     }
-
                 }
 
                 practiceCalls.currentStyleIndex = (MoveStyle)typeof(Player).GetField("moveStyleEquipped", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(player);
@@ -392,11 +391,6 @@ namespace PracticeUtils
                 collisionCube.transform.rotation = wallrunLine.transform.rotation;
                 collisionCube.transform.localScale = new Vector3((wallrunLine.transform.localScale.x/40), 0.2f, wallrunLine.transform.localScale.z);
             }
-        }
-
-        public void AutoFinishGrafs()
-        {
-            practiceCalls.autoFinishGrafs = !practiceCalls.autoFinishGrafs;
         }
     }
 }
