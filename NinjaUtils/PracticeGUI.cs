@@ -308,7 +308,7 @@ namespace PracticeUtils
             linePos = linePos + (elementSizeH * 2 + lineSpacing);
             if (GUI.Button(new Rect(sidePadding, linePos, winRect.width - (sidePadding * 2), elementSizeH), $"Toggle Auto Graf ({(practiceCalls.autoFinishGrafs ? "<color=green>On</color>" : "<color=red>Off</color>")}) (G)") && (practiceCalls.isMenuing || practiceCalls.isPaused))
             {
-                practiceFunction.AutoFinishGrafs();
+                practiceCalls.autoFinishGrafs = !practiceCalls.autoFinishGrafs;
             }
         }
 
